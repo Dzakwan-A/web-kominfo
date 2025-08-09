@@ -14,7 +14,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        // Ambil semua event, terbaru berdasarkan tanggal
         $events = Event::orderBy('date', 'desc')->paginate(10);
         return view('admin.events.index', compact('events'));
     }
@@ -32,17 +31,14 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $data = $request->validate([
             'title'       => 'required|string|max:255',
             'date'        => 'required|date',
             'description' => 'nullable|string',
         ]);
 
-        // Tambahkan slug otomatis
         $data['slug'] = Str::slug($data['title']);
 
-        // Simpan event
         Event::create($data);
 
         return redirect()
@@ -71,17 +67,14 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        // Validasi input
         $data = $request->validate([
             'title'       => 'required|string|max:255',
             'date'        => 'required|date',
             'description' => 'nullable|string',
         ]);
 
-        // Perbarui slug jika perlu
         $data['slug'] = Str::slug($data['title']);
 
-        // Update event
         $event->update($data);
 
         return redirect()

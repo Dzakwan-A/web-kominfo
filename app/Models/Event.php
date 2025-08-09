@@ -69,7 +69,7 @@ class HomeController extends Controller
 
 
 // app/Http/Controllers/Admin/EventController.php
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\EventController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
