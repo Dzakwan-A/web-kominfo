@@ -53,3 +53,12 @@ Route::middleware(['auth'])
      });
 
 require __DIR__.'/auth.php';
+
+
+// Admin - Galleries
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Tambahkan middleware('auth') di group ini jika diperlukan:
+    // ->middleware(['auth']);
+    Route::resource('galleries', AdminGalleryController::class);
+});
