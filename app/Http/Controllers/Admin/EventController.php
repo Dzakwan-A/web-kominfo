@@ -10,16 +10,25 @@ use Illuminate\Support\Str;
 class EventController extends Controller
 {
     /**
-     * Display a listing of the events.
+     * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::orderBy('date', 'desc')->paginate(10);
-        return view('admin.events.index', compact('events'));
+        $q = $request->string('q')->toString();
+        $events = Event::query()
+            ->search($q)
+            ->orderBy('date', 'desc')
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('admin.events.index', [
+            'events' => $events,
+            'q' => $q,
+        ]);
     }
 
     /**
-     * Show the form for creating a new event.
+     * Show the form for creating a new resource.
      */
     public function create()
     {
@@ -27,19 +36,22 @@ class EventController extends Controller
     }
 
     /**
-     * Store a newly created event in storage.
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'date'        => 'required|date',
-            'description' => 'nullable|string',
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:events,slug'],
+            'date' => ['required', 'date'],
+            'description' => ['nullable', 'string'],
         ]);
 
-        $data['slug'] = Str::slug($data['title']);
+        if (empty($validated['slug'] ?? null) && !empty($validated['title'])) {
+            $validated['slug'] = Str::slug($validated['title']);
+        }
 
-        Event::create($data);
+        Event::create($validated);
 
         return redirect()
             ->route('admin.events.index')
@@ -47,7 +59,7 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified event.
+     * Display the specified resource.
      */
     public function show(Event $event)
     {
@@ -55,7 +67,7 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for editing the specified event.
+     * Show the form for editing the specified resource.
      */
     public function edit(Event $event)
     {
@@ -63,19 +75,22 @@ class EventController extends Controller
     }
 
     /**
-     * Update the specified event in storage.
+     * Update the specified resource in storage.
      */
     public function update(Request $request, Event $event)
     {
-        $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'date'        => 'required|date',
-            'description' => 'nullable|string',
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:events,slug,' . $event->id],
+            'date' => ['required', 'date'],
+            'description' => ['nullable', 'string'],
         ]);
 
-        $data['slug'] = Str::slug($data['title']);
+        if (empty($validated['slug'] ?? null) && !empty($validated['title'])) {
+            $validated['slug'] = Str::slug($validated['title']);
+        }
 
-        $event->update($data);
+        $event->update($validated);
 
         return redirect()
             ->route('admin.events.index')
@@ -83,7 +98,7 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified event from storage.
+     * Remove the specified resource from storage.
      */
     public function destroy(Event $event)
     {

@@ -11,12 +11,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $slides     = Post::latest()->take(5)->get();       // untuk slider utama
-        $berita     = Post::latest()->skip(5)->take(4)->get();
-        $agenda     = Event::upcoming()->take(3)->get();    // scope upcoming pada model Event
-        $pengumuman = Announcement::latest()->take(3)->get();
-        $galeri     = Gallery::latest()->take(6)->get();
+        $slides = Post::query()->latest()->take(5)->get();
+        $berita = Post::query()->latest()->skip(5)->take(4)->get();
+        $agenda = Event::query()->upcoming()->take(3)->get();
+        $pengumuman = Announcement::query()->latest()->take(3)->get();
+        $galeri = Gallery::query()->latest()->take(6)->get();
 
-        return view('home', compact('slides','berita','agenda','pengumuman','galeri'));
+        return view('home', compact('slides', 'berita', 'agenda', 'pengumuman', 'galeri'));
     }
 }

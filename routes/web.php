@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -23,6 +25,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Admin - Galleries & Events
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('galleries', AdminGalleryController::class);
+    Route::resource('events', AdminEventController::class);
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,7 +65,6 @@ require __DIR__.'/auth.php';
 
 
 // Admin - Galleries
-use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 Route::prefix('admin')->name('admin.')->group(function () {
     // Tambahkan middleware('auth') di group ini jika diperlukan:
     // ->middleware(['auth']);
