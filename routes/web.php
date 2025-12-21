@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Writer\PostController as WriterPostController;
+use App\Http\Controllers\PublicPostController;
 
 // AREA ADMIN (controller yang dipakai)
 use App\Http\Controllers\Admin\PostController as AdminPostControllerResource;
@@ -20,6 +22,9 @@ Route::get('/', fn () => view('home'))->name('home');
 Route::middleware(['auth','verified'])
     ->get('/dashboard', fn () => view('dashboard'))
     ->name('dashboard');
+
+Route::get('/berita', [PublicPostController::class, 'index'])->name('posts.index');
+Route::get('/berita/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
 
 /* =========================
 |  PROFILE (USER)
@@ -45,6 +50,24 @@ Route::middleware(['auth','can:isAdmin'])
         Route::resource('posts', AdminPostControllerResource::class);
         Route::resource('events', AdminEventController::class);
         Route::resource('galleries', AdminGalleryController::class);
+    });
+
+
+    Route::middleware(['auth', 'verified', 'can:isWriter'])
+    ->prefix('penulis')
+    ->name('writer.')
+    ->group(function () {
+
+        // Dashboard Penulis
+        Route::get('/', [WriterPostController::class, 'dashboard'])->name('dashboard');
+
+        // Penulis hanya boleh: buat & simpan berita (dan lihat listnya)
+        Route::get('/posts/create', [WriterPostController::class, 'create'])->name('posts.create');
+        Route::post('/posts', [WriterPostController::class, 'store'])->name('posts.store');
+
+        
+        Route::get('/posts/{post}/edit', [WriterPostController::class, 'edit'])->name('posts.edit');
+        Route::put('/posts/{post}', [WriterPostController::class, 'update'])->name('posts.update');
     });
 
 require __DIR__.'/auth.php';
