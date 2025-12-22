@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -52,4 +54,63 @@ class PostController extends Controller
 
         return redirect()->route('writer.dashboard')->with('status', 'Berita berhasil disimpan.');
     }
+
+    public function edit(Post $post)
+{
+    // ✅ pastikan hanya pemilik yang bisa edit
+    abort_if($post->user_id !== auth::id(), 403);
+
+    return view('writer.posts.edit', compact('post'));
+}
+
+public function update(Request $request, Post $post)
+{
+    abort_if($post->user_id !== auth::id(), 403);
+
+    $data = $request->validate([
+        'title' => ['required','string','max:160'],
+        'excerpt' => ['nullable','string','max:300'],
+        'body' => ['required','string'],
+        'thumbnail' => ['nullable','image','max:4096'],
+        'status' => ['required','in:draft,publish'],
+    ]);
+
+    // upload thumbnail kalau ada
+    if ($request->hasFile('thumbnail')) {
+        $post->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+    }
+
+    $post->title = $data['title'];
+    $post->excerpt = $data['excerpt'] ?? $post->excerpt;
+    $post->body = $data['body'];
+
+    // publish logic
+    $post->published_at = $data['status'] === 'publish'
+        ? ($post->published_at ?? now())
+        : null;
+
+    $post->save();
+
+    return redirect()->route('writer.dashboard')->with('status', 'Berita berhasil diperbarui.');
+}
+
+
+    public function destroy(Post $post)
+{
+    // ✅ hanya pemilik yang bisa hapus
+    abort_if($post->user_id !== Auth::id(), 403);
+
+    // (opsional) hapus file thumbnail kalau ada
+    if ($post->thumbnail) {
+        Storage::disk('public')->delete($post->thumbnail);
+    }
+
+    $post->delete();
+
+    return redirect()
+        ->route('writer.dashboard')
+        ->with('status', 'Berita berhasil dihapus.');
+}
+
+
 }

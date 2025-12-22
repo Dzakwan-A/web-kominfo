@@ -21,18 +21,39 @@
     </div>
 
     <div class="divide-y">
-      @forelse($posts as $post)
-      <div class="p-4">
+  @forelse($posts as $post)
+    <div class="p-4 flex items-start justify-between gap-4">
+      <div>
         <div class="font-medium">{{ $post->title }}</div>
         <div class="text-sm text-slate-500">
           {{ $post->published_at ? 'Publish: '.$post->published_at->format('d M Y H:i') : 'Draft' }}
           · Dibuat: {{ $post->created_at->format('d M Y H:i') }}
         </div>
       </div>
-      @empty
-      <div class="p-6 text-slate-500">Belum ada berita.</div>
-      @endforelse
+
+      <div class="flex items-center gap-2">
+  <a href="{{ route('writer.posts.edit', $post) }}"
+     class="px-3 py-1.5 rounded-lg border text-sm hover:bg-slate-50">
+    Edit
+  </a>
+
+  <form action="{{ route('writer.posts.destroy', $post) }}" method="POST"
+        onsubmit="return confirm('Yakin ingin menghapus berita ini?');">
+    @csrf
+    @method('DELETE')
+    <button type="submit"
+            class="px-3 py-1.5 rounded-lg border text-sm hover:bg-slate-50 text-red-600">
+      Hapus
+    </button>
+  </form>
+</div>
+
     </div>
+  @empty
+    <div class="p-6 text-slate-500">Belum ada berita.</div>
+  @endforelse
+</div>
+
 
     <div class="px-4 py-3">
       {{ $posts->links() }}

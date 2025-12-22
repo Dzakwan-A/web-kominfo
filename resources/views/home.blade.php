@@ -12,21 +12,73 @@
                            radial-gradient(1000px 600px at 90% 0%, rgba(16,185,129,.15), transparent 55%),
                            linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%); }
     .section-heading { font-size: clamp(1.25rem, 2vw, 1.875rem); font-weight: 600; letter-spacing: -0.01em; }
+  /* dropdown helper  */
+.dropdown-panel{
+  opacity: 0;
+  transform: translateY(6px);
+  visibility: hidden;
+  transition: .15s ease;
+}
+.group:hover .dropdown-panel,
+.group:focus-within .dropdown-panel{
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
   </style>
 </head>
 <body class="antialiased text-slate-800">
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
     <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-      <a href="{{ route('home') }}" class="flex items-center gap-3">
-        <span class="inline-flex h-9 w-9 rounded-xl bg-blue-600 text-white items-center justify-center shadow">K</span>
-        <span class="font-semibold">{{ $appName }}</span>
-      </a>
+     <a href="{{ route('home') }}" class="flex items-center gap-3">
+  <img src="{{ asset('images/logo-kominfo.png') }}"
+       alt="{{ $appName }}"
+       class="h-9 w-9 rounded-xl object-cover shadow" />
+  <span class="font-semibold">Diskominfo Kota Madiun</span>
+</a>
+
       <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a href="#layanan" class="hover:text-blue-600">Layanan</a>
-        <a href="#berita" class="hover:text-blue-600">Berita</a>
-        <a href="#profil" class="hover:text-blue-600">Profil</a>
-        <a href="#kontak" class="hover:text-blue-600">Kontak</a>
-      </nav>
+  <a href="#layanan" class="hover:text-blue-600">Layanan</a>
+  <a href="#berita" class="hover:text-blue-600">Berita</a>
+
+  {{-- ✅ Dropdown Profil --}}
+  <div class="relative group">
+    <button type="button" class="inline-flex items-center gap-1 hover:text-blue-600">
+      Profil
+      <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+
+    <div class="dropdown-panel absolute left-0 top-full mt-2 w-80 rounded-xl border bg-white shadow-lg overflow-hidden z-50">
+      <a href="{{ route('profil.tentang') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Tentang <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.visi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Visi Misi <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.struktur') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Struktur Organisasi <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.tupoksi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Tupoksi Diskominfo Kota Madiun <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.standar') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Standar Pelayanan <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.pegawai') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        Data Pegawai <span class="text-slate-400">›</span>
+      </a>
+      <a href="{{ route('profil.lhkpn') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
+        LHKPN Pejabat Publik Pemerintah Kota Madiun <span class="text-slate-400">›</span>
+      </a>
+    </div>
+  </div>
+
+  <a href="#kontak" class="hover:text-blue-600">Kontak</a>
+</nav>
+
       <div class="flex items-center gap-2">
         @auth
           <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm">Dashboard</a>

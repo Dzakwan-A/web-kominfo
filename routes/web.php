@@ -26,6 +26,14 @@ Route::middleware(['auth','verified'])
 Route::get('/berita', [PublicPostController::class, 'index'])->name('posts.index');
 Route::get('/berita/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
 
+Route::view('/profil/tentang', 'profil.tentang')->name('profil.tentang');
+Route::view('/profil/visi-misi', 'profil.visi')->name('profil.visi');
+Route::view('/profil/struktur-organisasi', 'profil.struktur')->name('profil.struktur');
+Route::view('/profil/tupoksi', 'profil.tupoksi')->name('profil.tupoksi');
+Route::view('/profil/standar-pelayanan', 'profil.standar')->name('profil.standar');
+Route::view('/profil/data-pegawai', 'profil.pegawai')->name('profil.pegawai');
+Route::view('/profil/lhkpn', 'profil.lhkpn')->name('profil.lhkpn');
+
 /* =========================
 |  PROFILE (USER)
 |========================= */
@@ -68,6 +76,14 @@ Route::middleware(['auth','can:isAdmin'])
         
         Route::get('/posts/{post}/edit', [WriterPostController::class, 'edit'])->name('posts.edit');
         Route::put('/posts/{post}', [WriterPostController::class, 'update'])->name('posts.update');
+
+        Route::get('/posts/{post}/edit', [WriterPostController::class, 'edit'])->name('posts.edit');
+        Route::put('/posts/{post}', [WriterPostController::class, 'update'])->name('posts.update');
+
+        Route::delete('/posts/{post}', [WriterPostController::class, 'destroy'])->name('posts.destroy');
+
+
     });
+
 
 require __DIR__.'/auth.php';
