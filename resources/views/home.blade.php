@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Beranda — {{ $appName }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,.75); }
     .radial-bg { background: radial-gradient(1200px 600px at 10% -10%, rgba(59,130,246,.2), transparent 60%),
@@ -28,69 +29,11 @@
 
   </style>
 </head>
+
+  @include('partials.header')
+
 <body class="antialiased text-slate-800">
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-     <a href="{{ route('home') }}" class="flex items-center gap-3">
-  <img src="{{ asset('images/logo-kominfo.png') }}"
-       alt="{{ $appName }}"
-       class="h-9 w-9 rounded-xl object-cover shadow" />
-  <span class="font-semibold">Diskominfo Kota Madiun</span>
-</a>
-
-      <nav class="hidden md:flex items-center gap-6 text-sm">
-  <a href="#layanan" class="hover:text-blue-600">Layanan</a>
-  <a href="#berita" class="hover:text-blue-600">Berita</a>
-
-  {{-- ✅ Dropdown Profil --}}
-  <div class="relative group">
-    <button type="button" class="inline-flex items-center gap-1 hover:text-blue-600">
-      Profil
-      <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-      </svg>
-    </button>
-
-    <div class="dropdown-panel absolute left-0 top-full mt-2 w-80 rounded-xl border bg-white shadow-lg overflow-hidden z-50">
-      <a href="{{ route('profil.tentang') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Tentang <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.visi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Visi Misi <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.struktur') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Struktur Organisasi <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.tupoksi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Tupoksi Diskominfo Kota Madiun <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.standar') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Standar Pelayanan <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.pegawai') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Data Pegawai <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.lhkpn') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        LHKPN Pejabat Publik Pemerintah Kota Madiun <span class="text-slate-400">›</span>
-      </a>
-    </div>
-  </div>
-
-  <a href="#kontak" class="hover:text-blue-600">Kontak</a>
-</nav>
-
-      <div class="flex items-center gap-2">
-        @auth
-          <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm">Dashboard</a>
-          <form method="POST" action="{{ route('logout') }}">@csrf
-            <button class="px-3 py-2 rounded-lg border text-sm">Keluar</button>
-          </form>
-        @else
-          <a href="{{ route('login') }}" class="px-3 py-2 rounded-lg border text-sm">Masuk</a>
-        @endauth
-      </div>
-    </div>
-  </header>
+ 
 
   <section class="relative radial-bg">
     <div class="absolute inset-0 -z-10">
@@ -119,62 +62,84 @@
           Akses berita, layanan, dan informasi digital pemerintahan dalam satu tempat.
         </p>
         <div class="flex flex-wrap gap-3">
-          <a href="#layanan" class="px-5 py-3 rounded-xl bg-blue-600 text-white shadow hover:-translate-y-0.5 transition">
-            Lihat Layanan
-          </a>
           <a href="#berita" class="px-5 py-3 rounded-xl border shadow-sm bg-white hover:bg-slate-50 transition">
             Update Berita
           </a>
         </div>
       </div>
-      <div class="glass rounded-3xl shadow-xl p-6 md:p-8">
-        <div class="grid grid-cols-2 gap-4">
-          <div class="rounded-2xl p-5 bg-gradient-to-br from-blue-50 to-blue-100">
-            <p class="text-4xl font-bold">24/7</p>
-            <p class="text-sm text-slate-600">Layanan Aduan</p>
-          </div>
-          <div class="rounded-2xl p-5 bg-gradient-to-br from-emerald-50 to-emerald-100">
-            <p class="text-4xl font-bold">99%</p>
-            <p class="text-sm text-slate-600">Uptime Jaringan</p>
-          </div>
-          <div class="rounded-2xl p-5 bg-gradient-to-br from-purple-50 to-purple-100">
-            <p class="text-4xl font-bold">15+</p>
-            <p class="text-sm text-slate-600">Layanan Digital</p>
-          </div>
-          <div class="rounded-2xl p-5 bg-gradient-to-br from-amber-50 to-amber-100">
-            <p class="text-4xl font-bold">∞</p>
-            <p class="text-sm text-slate-600">Akses Informasi</p>
-          </div>
-        </div>
-      </div>
+     <div
+  x-data="{
+    i: 0,
+    slides: [
+      { src: '{{ asset('images/slider/1.jpg') }}', alt: 'Slide 1' },
+      { src: '{{ asset('images/slider/2.jpg') }}', alt: 'Slide 2' },
+      { src: '{{ asset('images/slider/3.jpg') }}', alt: 'Slide 3' },
+    ],
+    next(){ this.i = (this.i + 1) % this.slides.length },
+    prev(){ this.i = (this.i - 1 + this.slides.length) % this.slides.length },
+    go(n){ this.i = n }
+  }"
+  x-init="setInterval(() => next(), 5000)"
+  class="glass rounded-3xl shadow-xl p-4 md:p-6"
+>
+  <div class="relative overflow-hidden rounded-2xl bg-slate-200 h-[260px] md:h-[320px]">
+    <!-- Slide -->
+    <template x-for="(s, idx) in slides" :key="idx">
+      <img
+        x-show="i === idx"
+        x-transition.opacity.duration.300ms
+        :src="s.src"
+        :alt="s.alt"
+        class="absolute inset-0 w-full h-full object-cover"
+        style="display:none;"
+      >
+    </template>
+
+    <!-- Controls -->
+    <button type="button"
+      @click="prev()"
+      class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white shadow p-2"
+      aria-label="Sebelumnya"
+    >
+      ‹
+    </button>
+
+    <button type="button"
+      @click="next()"
+      class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white shadow p-2"
+      aria-label="Berikutnya"
+    >
+      ›
+    </button>
+
+    <!-- Dots -->
+    <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
+      <template x-for="(s, idx) in slides" :key="'dot'+idx">
+        <button type="button"
+          @click="go(idx)"
+          class="h-2.5 w-2.5 rounded-full"
+          :class="i === idx ? 'bg-white' : 'bg-white/50'"
+          aria-label="Pilih slide"
+        ></button>
+      </template>
+    </div>
+  </div>
+
+  <!-- Caption (opsional) -->
+  <div class="mt-4 flex items-center justify-between">
+    <div class="text-sm text-slate-600">
+      <span class="font-semibold text-slate-800">Galeri</span>
+      <span class="mx-2">•</span>
+      <span x-text="(i+1) + ' / ' + slides.length"></span>
+    </div>
+
+    <a href="#berita" class="text-sm text-blue-600 hover:underline">Lihat Berita</a>
+  </div>
+</div>
+
     </div>
   </section>
 
-  <section id="layanan" class="py-14 md:py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 md:px-6">
-      <div class="flex items-end justify-between mb-8">
-        <h2 class="section-heading">Layanan Utama</h2>
-        <a href="#" class="text-sm text-blue-600 hover:underline">Semua layanan</a>
-      </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        @foreach([
-          ['icon'=>'📢','title'=>'PPID','desc'=>'Permohonan informasi publik dan dokumentasi.'],
-          ['icon'=>'🛰️','title'=>'Infrastruktur TIK','desc'=>'Layanan jaringan & pusat data.'],
-          ['icon'=>'🧭','title'=>'Aplikasi Publik','desc'=>'Katalog aplikasi layanan warga.'],
-          ['icon'=>'🛡️','title'=>'Keamanan Siber','desc'=>'Monitoring & respons insiden.'],
-        ] as $item)
-        <div class="group rounded-2xl border bg-white hover:shadow-md transition p-5">
-          <div class="text-3xl mb-3">{{ $item['icon'] }}</div>
-          <h3 class="font-semibold mb-1">{{ $item['title'] }}</h3>
-          <p class="text-sm text-slate-600">{{ $item['desc'] }}</p>
-          <a href="#" class="mt-4 inline-flex items-center gap-2 text-sm text-blue-600">Selengkapnya
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 5 7 7-7 7"/></svg>
-          </a>
-        </div>
-        @endforeach
-      </div>
-    </div>
-  </section>
 
   <section id="berita" class="py-14 md:py-20 bg-slate-50">
   <div class="max-w-7xl mx-auto px-4 md:px-6">
@@ -264,4 +229,6 @@
     </div>
   </footer>
 </body>
+
+
 </html>

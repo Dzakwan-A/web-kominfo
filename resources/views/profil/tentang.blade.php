@@ -14,68 +14,26 @@
         linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     }
     .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,.78); }
+       /* dropdown helper  */
+    .dropdown-panel{
+  opacity: 0;
+  transform: translateY(6px);
+  visibility: hidden;
+  transition: .15s ease;
+}
+    .group:hover .dropdown-panel,
+    .group:focus-within .dropdown-panel{
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
   </style>
 </head>
 
+@include('partials.header')
+
 <body class="antialiased text-slate-800 bg-slate-50">
-  {{-- Header (konsisten dengan home) --}}
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-      <a href="{{ route('home') }}" class="flex items-center gap-3">
-        <span class="inline-flex h-9 w-9 rounded-xl bg-blue-600 text-white items-center justify-center shadow">K</span>
-        <span class="font-semibold">{{ $appName }}</span>
-      </a>
-
-      <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a href="{{ route('home') }}#layanan" class="hover:text-blue-600">Layanan</a>
-        <a href="{{ route('posts.index') }}" class="hover:text-blue-600">Berita</a>
-
-        {{-- Dropdown Profil (tanpa JS, hover) --}}
-        <div class="relative group">
-          <button type="button" class="inline-flex items-center gap-1 hover:text-blue-600">
-            Profil
-            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-            </svg>
-          </button>
-
-          <div class="absolute left-0 top-full pt-2 opacity-0 translate-y-1 invisible
-                      group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible
-                      transition duration-150 ease-out">
-            <div class="w-80 rounded-xl border bg-white shadow-lg overflow-hidden">
-              <a class="block px-4 py-3 hover:bg-slate-50 font-medium text-slate-700"
-                 href="{{ route('profil.tentang') }}">Tentang</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.visi') }}">Visi Misi</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.struktur') }}">Struktur Organisasi</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.tupoksi') }}">Tupoksi Diskominfo Kota Madiun</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.standar') }}">Standar Pelayanan</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.pegawai') }}">Data Pegawai</a>
-              <a class="block px-4 py-3 hover:bg-slate-50 text-slate-700"
-                 href="{{ route('profil.lhkpn') }}">LHKPN Pejabat Publik</a>
-            </div>
-          </div>
-        </div>
-
-        <a href="{{ route('home') }}#kontak" class="hover:text-blue-600">Kontak</a>
-      </nav>
-
-      <div class="flex items-center gap-2">
-        @auth
-          <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm">Dashboard</a>
-          <form method="POST" action="{{ route('logout') }}">@csrf
-            <button class="px-3 py-2 rounded-lg border text-sm bg-white hover:bg-slate-50">Keluar</button>
-          </form>
-        @else
-          <a href="{{ route('login') }}" class="px-3 py-2 rounded-lg border text-sm bg-white hover:bg-slate-50">Masuk</a>
-        @endauth
-      </div>
-    </div>
-  </header>
+  
 
   {{-- Hero --}}
   <section class="radial-bg border-b">
@@ -98,23 +56,13 @@
             </p>
           </div>
 
-          <div class="flex gap-3">
-            <a href="{{ route('profil.visi') }}"
-               class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm shadow hover:-translate-y-0.5 transition">
-              Lihat Visi & Misi
-            </a>
-            <a href="{{ route('profil.struktur') }}"
-               class="px-4 py-2 rounded-xl border bg-white text-sm hover:bg-slate-50 transition">
-              Struktur Organisasi
-            </a>
-          </div>
         </div>
       </div>
 
       {{-- Cover Image --}}
       <div class="mt-8 rounded-3xl overflow-hidden border bg-white shadow-sm">
         <div class="h-56 md:h-72 bg-slate-200">
-          {{-- Ganti src ini dengan foto kantor kamu (public/images/kantor.jpg) --}}
+          {{-- Ganti src ini dengan foto  (public/images/kantor.jpg) --}}
           <img src="{{ asset('images/kantor-kominfo.jpg') }}"
                onerror="this.style.display='none'"
                alt="Kantor Diskominfo"
@@ -223,14 +171,6 @@
             </div>
           </div>
 
-          <div class="mt-6 grid grid-cols-2 gap-3">
-            <a href="{{ route('profil.tupoksi') }}" class="rounded-xl border px-3 py-2 text-center text-sm hover:bg-slate-50">
-              Tupoksi
-            </a>
-            <a href="{{ route('profil.standar') }}" class="rounded-xl border px-3 py-2 text-center text-sm hover:bg-slate-50">
-              Standar
-            </a>
-          </div>
         </div>
 
         <div class="glass rounded-3xl border p-6">
