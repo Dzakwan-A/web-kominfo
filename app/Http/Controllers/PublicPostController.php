@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PublicPostController extends Controller
 {
@@ -13,6 +14,32 @@ class PublicPostController extends Controller
             ->paginate(9);
 
         return view('posts.index', compact('posts'));
+    }
+
+    /**
+     * Filter / cari berita berdasarkan judul dan tag.
+     * URL referensi: /berita/result/filter?cari_berita=...
+     */
+    public function filter(Request $request)
+    {
+        $q = trim((string) $request->query('cari_berita', ''));
+
+        $posts = Post::whereNotNull('published_at')
+            ->when($q !== '', function ($query) use ($q) {
+                // PostgreSQL: gunakan ILIKE untuk case-insensitive
+                $query->where(function ($sub) use ($q) {
+                    $sub->where('title', 'ilike', "%{$q}%")
+                        ->orWhere('tags', 'ilike', "%{$q}%");
+                });
+            })
+            ->latest('published_at')
+            ->paginate(9)
+            ->appends(['cari_berita' => $q]);
+
+        return view('posts.filter', [
+            'posts' => $posts,
+            'q' => $q,
+        ]);
     }
 
     public function show(Post $post)

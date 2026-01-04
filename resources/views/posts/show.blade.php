@@ -15,6 +15,22 @@
       {{ $post->published_at?->format('d M Y H:i') }}
     </div>
 
+    @if(!empty($post->tags))
+      @php
+        $tags = collect(explode(',', $post->tags))
+          ->map(fn ($t) => trim($t))
+          ->filter();
+      @endphp
+
+      @if($tags->isNotEmpty())
+        <div class="mt-3 flex flex-wrap gap-2">
+          @foreach($tags as $tag)
+            <span class="text-xs px-2 py-1 rounded-full border bg-slate-50 text-slate-700">{{ $tag }}</span>
+          @endforeach
+        </div>
+      @endif
+    @endif
+
     @if($post->thumbnail)
       <div class="mt-6 rounded-2xl overflow-hidden border bg-slate-100">
         <img src="{{ Storage::url($post->thumbnail) }}" class="w-full object-cover" alt="{{ $post->title }}">

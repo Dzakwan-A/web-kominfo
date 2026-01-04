@@ -54,6 +54,14 @@
       </select>
     </div>
 
+    <div>
+      <label class="block text-sm font-medium">Tag (opsional)</label>
+      <input name="tags" value="{{ old('tags', $post->tags) }}"
+             class="mt-1 w-full rounded-lg border px-3 py-2" placeholder="Contoh: kota baru, kegiatan, kominfo">
+      <p class="text-xs text-slate-500 mt-1">Pisahkan beberapa tag dengan koma.</p>
+      @error('tags') <div class="text-sm text-red-600 mt-1">{{ $message }}</div> @enderror
+    </div>
+
     <div class="flex items-center gap-3 pt-2">
       <button class="px-4 py-2 rounded-lg bg-blue-600 text-white">Simpan Perubahan</button>
       <a href="{{ route('writer.dashboard') }}" class="px-4 py-2 rounded-lg border">Batal</a>

@@ -35,11 +35,24 @@ class PostController extends Controller
             'body' => ['required','string'],
             'thumbnail' => ['nullable','image','max:4096'],
             'status' => ['required','in:draft,publish'],
+            // Tag dipisahkan dengan koma, contoh: "kota baru, kegiatan, kominfo"
+            'tags' => ['nullable','string','max:255'],
         ]);
 
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')->store('thumbnails','public');
+        }
+
+        // Normalisasi tag: trim, buang yang kosong, hapus duplikat, gabungkan lagi
+        $normalizedTags = null;
+        if (!empty($data['tags'] ?? null)) {
+            $normalizedTags = collect(explode(',', $data['tags']))
+                ->map(fn ($t) => trim($t))
+                ->filter()
+                ->unique()
+                ->take(15)
+                ->implode(', ');
         }
 
         Post::create([
@@ -50,6 +63,7 @@ class PostController extends Controller
             'thumbnail' => $thumbnailPath,
             'published_at' => $data['status'] === 'publish' ? now() : null,
             'user_id' => $request->user()->id, // ✅ penting biar “punya siapa”
+            'tags' => $normalizedTags,
         ]);
 
         return redirect()->route('writer.dashboard')->with('status', 'Berita berhasil disimpan.');
@@ -73,6 +87,7 @@ public function update(Request $request, Post $post)
         'body' => ['required','string'],
         'thumbnail' => ['nullable','image','max:4096'],
         'status' => ['required','in:draft,publish'],
+        'tags' => ['nullable','string','max:255'],
     ]);
 
     // upload thumbnail kalau ada
@@ -83,6 +98,18 @@ public function update(Request $request, Post $post)
     $post->title = $data['title'];
     $post->excerpt = $data['excerpt'] ?? $post->excerpt;
     $post->body = $data['body'];
+
+    // normalisasi tag
+    if (array_key_exists('tags', $data)) {
+        $post->tags = !empty($data['tags'])
+            ? collect(explode(',', $data['tags']))
+                ->map(fn ($t) => trim($t))
+                ->filter()
+                ->unique()
+                ->take(15)
+                ->implode(', ')
+            : null;
+    }
 
     // publish logic
     $post->published_at = $data['status'] === 'publish'

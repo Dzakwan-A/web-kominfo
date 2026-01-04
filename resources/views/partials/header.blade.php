@@ -49,6 +49,28 @@
   </div>
 
       <a href="{{ route('faq') }}" class="hover:text-blue-600">FAQ</a>
+
+      {{-- Searchbar berita (judul + tag) --}}
+      <form method="GET" action="{{ route('posts.filter') }}" class="flex items-center">
+        <div class="relative">
+          <input
+            type="text"
+            name="cari_berita"
+            value="{{ request()->query('cari_berita') }}"
+            placeholder="Cari berita..."
+            class="w-52 lg:w-64 pl-4 pr-9 py-2 rounded-xl border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+          <button
+            type="submit"
+            class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-blue-600"
+            aria-label="Cari"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+              <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 4.218 12.03l3.251 3.252a.75.75 0 1 0 1.06-1.06l-3.251-3.252A6.75 6.75 0 0 0 10.5 3.75ZM5.25 10.5a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </form>
     </nav>
 
     {{-- Tombol kanan --}}

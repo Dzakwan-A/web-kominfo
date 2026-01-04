@@ -41,6 +41,13 @@
       @error('status')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
     </div>
 
+    <div>
+      <label class="block text-sm font-medium mb-1">Tag (opsional)</label>
+      <input name="tags" class="w-full border rounded-lg px-3 py-2" value="{{ old('tags') }}" placeholder="Contoh: kota baru, kegiatan, kominfo">
+      <p class="text-xs text-slate-500 mt-1">Pisahkan beberapa tag dengan koma.</p>
+      @error('tags')<div class="text-sm text-red-600 mt-1">{{ $message }}</div>@enderror
+    </div>
+
     <div class="pt-2">
       <button class="px-4 py-2 rounded-lg bg-blue-600 text-white">Simpan</button>
       <a href="{{ route('admin.dashboard') }}" class="ml-2 px-4 py-2 rounded-lg border">Batal</a>

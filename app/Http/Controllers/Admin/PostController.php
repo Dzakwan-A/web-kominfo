@@ -29,11 +29,23 @@ class PostController extends Controller
             'body'        => 'required',
             'category_id' => 'nullable|exists:categories,id',
             'thumbnail'   => 'nullable|image|max:2048',
+            // Tag dipisahkan dengan koma, contoh: "kota baru, kegiatan, kominfo"
+            'tags'        => 'nullable|string|max:255',
         ]);
 
         $thumb = $request->hasFile('thumbnail')
             ? $request->file('thumbnail')->store('thumbnails', 'public')
             : null;
+
+        $normalizedTags = null;
+        if (!empty($request->tags)) {
+            $normalizedTags = collect(explode(',', $request->tags))
+                ->map(fn ($t) => trim($t))
+                ->filter()
+                ->unique()
+                ->take(15)
+                ->implode(', ');
+        }
 
         Post::create([
             'title'        => $request->title,
@@ -42,6 +54,7 @@ class PostController extends Controller
             'thumbnail'    => $thumb,
             'published_at' => now(),
             'category_id'  => $request->category_id,
+            'tags'         => $normalizedTags,
         ]);
 
         return redirect()->route('admin.posts.index')
@@ -61,10 +74,21 @@ class PostController extends Controller
             'body'        => 'required',
             'category_id' => 'nullable|exists:categories,id',
             'thumbnail'   => 'nullable|image|max:2048',
+            'tags'        => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('thumbnail')) {
             $post->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
+        }
+
+        $normalizedTags = null;
+        if (!empty($request->tags)) {
+            $normalizedTags = collect(explode(',', $request->tags))
+                ->map(fn ($t) => trim($t))
+                ->filter()
+                ->unique()
+                ->take(15)
+                ->implode(', ');
         }
 
         $post->update([
@@ -72,6 +96,7 @@ class PostController extends Controller
             'slug'        => Str::slug($request->title),
             'body'        => $request->body,
             'category_id' => $request->category_id,
+            'tags'        => $normalizedTags,
         ]);
 
         return redirect()->route('admin.posts.index')
