@@ -35,10 +35,14 @@
                         Home
                     </x-nav-link>
 
-                    @if($role === 'admin')
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                            Admin
-                        </x-nav-link>
+                   @if($role === 'admin')
+    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+        Admin
+    </x-nav-link>
+
+    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+        Users
+    </x-nav-link>
                     @elseif($role === 'penulis')
                         <x-nav-link :href="route('writer.dashboard')" :active="request()->routeIs('writer.*')">
                             Penulis
@@ -81,10 +85,14 @@
                 Home
             </x-responsive-nav-link>
 
-            @if($role === 'admin')
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                    Admin
-                </x-responsive-nav-link>
+          @if($role === 'admin')
+    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+        Admin
+    </x-responsive-nav-link>
+
+    <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+        Users
+    </x-responsive-nav-link>
             @elseif($role === 'penulis')
                 <x-responsive-nav-link :href="route('writer.dashboard')" :active="request()->routeIs('writer.*')">
                     Penulis

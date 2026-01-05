@@ -63,6 +63,7 @@ Route::middleware(['auth','can:isAdmin'])
         Route::resource('posts', AdminPostControllerResource::class);
         Route::resource('events', AdminEventController::class);
         Route::resource('galleries', AdminGalleryController::class);
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
     });
 
 

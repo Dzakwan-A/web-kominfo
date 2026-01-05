@@ -68,40 +68,48 @@ class PostController extends Controller
     }
 
     public function update(Request $request, Post $post)
-    {
-        $request->validate([
-            'title'       => 'required|max:255',
-            'body'        => 'required',
-            'category_id' => 'nullable|exists:categories,id',
-            'thumbnail'   => 'nullable|image|max:2048',
-            'tags'        => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'title'     => 'required|max:255',
+        'excerpt'   => 'nullable|string|max:300',
+        'body'      => 'required',
+        'thumbnail' => 'nullable|image|max:2048',
+        'status'    => 'required|in:draft,publish',
+        'tags'      => 'nullable|string|max:255',
+    ]);
 
-        if ($request->hasFile('thumbnail')) {
-            $post->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
-
-        $normalizedTags = null;
-        if (!empty($request->tags)) {
-            $normalizedTags = collect(explode(',', $request->tags))
-                ->map(fn ($t) => trim($t))
-                ->filter()
-                ->unique()
-                ->take(15)
-                ->implode(', ');
-        }
-
-        $post->update([
-            'title'       => $request->title,
-            'slug'        => Str::slug($request->title),
-            'body'        => $request->body,
-            'category_id' => $request->category_id,
-            'tags'        => $normalizedTags,
-        ]);
-
-        return redirect()->route('admin.posts.index')
-                         ->with('success', 'Berita berhasil diperbarui.');
+    if ($request->hasFile('thumbnail')) {
+        $post->thumbnail = $request->file('thumbnail')->store('thumbnails', 'public');
     }
+
+    // normalisasi tag
+    $normalizedTags = null;
+    if (!empty($request->tags)) {
+        $normalizedTags = collect(explode(',', $request->tags))
+            ->map(fn ($t) => trim($t))
+            ->filter()
+            ->unique()
+            ->take(15)
+            ->implode(', ');
+    }
+
+    $post->title = $request->title;
+    $post->slug  = Str::slug($request->title);
+    $post->excerpt = $request->excerpt ?? $post->excerpt ?? Str::limit(strip_tags($request->body), 140);
+    $post->body  = $request->body;
+    $post->tags  = $normalizedTags;
+
+    // status publish/draft
+    $post->published_at = $request->status === 'publish'
+        ? ($post->published_at ?? now())
+        : null;
+
+    $post->save();
+
+    return redirect()->route('admin.dashboard')
+                     ->with('status', 'Berita berhasil diperbarui.');
+}
+
 
     public function destroy(Post $post)
     {

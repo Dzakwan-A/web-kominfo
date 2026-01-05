@@ -9,11 +9,12 @@
     <a href="{{ route('admin.posts.create') }}" class="px-4 py-2 rounded-lg bg-blue-600 text-white">+ Buat Berita</a>
   </div>
 
-  @if(session('status'))
+  @if(session('status') || session('success'))
   <div class="mb-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3">
-    {{ session('status') }}
+    {{ session('status') ?? session('success') }}
   </div>
-  @endif
+@endif
+
 
   <div class="bg-white rounded-xl shadow-sm border">
     <div class="p-4 border-b">
@@ -29,9 +30,37 @@
             · Dibuat: {{ $post->created_at->format('d M Y H:i') }}
           </div>
         </div>
-        <div class="text-sm text-slate-500">
-          Oleh: {{ optional($post->user)->name ?? '—' }}
-        </div>
+        <div class="text-sm text-slate-500 text-right flex flex-col items-end gap-2">
+  <div>
+    Oleh: {{ optional($post->user)->name ?? '—' }}
+  </div>
+
+  <div class="flex items-center gap-2">
+    <a
+      href="{{ route('admin.posts.edit', $post) }}"
+      class="px-3 py-1 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
+    >
+      Edit
+    </a>
+
+    <form
+      action="{{ route('admin.posts.destroy', $post) }}"
+      method="POST"
+      onsubmit="return confirm('Yakin mau hapus berita ini?')"
+    >
+      @csrf
+      @method('DELETE')
+
+      <button
+        type="submit"
+        class="px-3 py-1 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+      >
+        Hapus
+      </button>
+    </form>
+  </div>
+</div>
+
       </div>
       @empty
       <div class="p-6 text-slate-500">Belum ada berita.</div>
