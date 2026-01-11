@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\PostController as AdminPostControllerResource;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\AdminPostController; // controller custom untuk dashboard admin
+use App\Http\Controllers\ProfilePageController;
+use App\Http\Controllers\Admin\ProfilePageController as AdminProfilePageController;
 
 /* =========================
 |  PUBLIC / FRONT SITE
@@ -29,6 +31,8 @@ Route::get('/berita/result/filter', [PublicPostController::class, 'filter'])->na
 Route::get('/berita/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
 Route::get('/profil/standar-pelayanan', [ProfileController::class, 'standarpelayanan'])
   ->name('profil.standar');
+Route::get('/profil/{key}', [ProfilePageController::class, 'show'])
+    ->name('profile.show');
 
 Route::view('/profil/tentang', 'profil.tentang')->name('profil.tentang');
 Route::view('/profil/visi-misi', 'profil.visi')->name('profil.visi');
@@ -58,6 +62,13 @@ Route::middleware(['auth','can:isAdmin'])
 
         // Dashboard Admin kustom
         Route::get('/', [AdminPostController::class, 'dashboard'])->name('dashboard');
+
+        Route::get('/profil/edit', [AdminProfilePageController::class, 'edit'])
+            ->name('profile.edit');
+        Route::put('/profil/edit', [AdminProfilePageController::class, 'update'])
+            ->name('profile.update');
+       Route::post('/profil/upload-image', [AdminProfilePageController::class, 'uploadImage'])
+            ->name('profile.upload-image');
 
         // CRUD konten admin
         Route::resource('posts', AdminPostControllerResource::class);

@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Category;
 
 class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title','slug','excerpt','body','thumbnail','published_at','user_id','tags'
+        'title','slug','excerpt','body','thumbnail','published_at','user_id', 'category_id','tags'
     ];
 
     protected $casts = [
@@ -26,6 +27,11 @@ class Post extends Model
                 $post->slug = Str::slug(Str::limit($post->title, 60, ''));
             }
         });
+    }
+
+     public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function user()

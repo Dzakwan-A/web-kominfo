@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* dropdown helper */
+.dropdown-panel {
+  opacity: 0;
+  transform: translateY(6px);
+  visibility: hidden;
+  transition: 0.15s ease;
+}
+
+.group:hover .dropdown-panel,
+.group:focus-within .dropdown-panel {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
 
 
 

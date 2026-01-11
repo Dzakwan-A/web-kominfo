@@ -15,38 +15,84 @@
       <a href="{{ route('posts.index') }}" class="hover:text-blue-600">Berita</a>
 
       {{-- ✅ Dropdown Profil --}}
-  <div class="relative group">
-    <button type="button" class="inline-flex items-center gap-1 hover:text-blue-600">
-      Profil
-      <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
-      </svg>
-    </button>
+      <div class="relative group">
+  <button
+    type="button"
+    class="inline-flex items-center gap-1 hover:text-blue-600"
+  >
+    Profil
+    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+      />
+    </svg>
+  </button>
 
-    <div class="dropdown-panel absolute left-0 top-full mt-2 w-80 rounded-xl border bg-white shadow-lg overflow-hidden z-50">
-      <a href="{{ route('profil.tentang') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Tentang <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.visi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Visi Misi <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.struktur') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Struktur Organisasi <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.tupoksi') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Tupoksi Diskominfo Kota Madiun <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.standar') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Standar Pelayanan <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.pegawai') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        Data Pegawai <span class="text-slate-400">›</span>
-      </a>
-      <a href="{{ route('profil.lhkpn') }}" class="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
-        LHKPN Pejabat Publik Pemerintah Kota Madiun <span class="text-slate-400">›</span>
-      </a>
-    </div>
+  <div
+    class="dropdown-panel absolute left-0 top-full mt-2 w-80 rounded-xl border
+           bg-white shadow-lg overflow-hidden z-50"
+  >
+    <a
+      href="{{ route('profile.show', 'tentang') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Tentang
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'visi-misi') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Visi Misi
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'struktur-organisasi') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Struktur Organisasi
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'tupoksi') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Tupoksi Diskominfo Kota Madiun
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'standar-pelayanan') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Standar Pelayanan
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'data-pegawai') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      Data Pegawai
+      <span class="text-slate-400">›</span>
+    </a>
+
+    <a
+      href="{{ route('profile.show', 'lhkpn') }}"
+      class="flex items-center justify-between px-4 py-3 hover:bg-slate-50"
+    >
+      LHKPN Pejabat Publik Pemerintah Kota Madiun
+      <span class="text-slate-400">›</span>
+    </a>
   </div>
+</div>
+
+
 
       <a href="{{ route('faq') }}" class="hover:text-blue-600">FAQ</a>
 

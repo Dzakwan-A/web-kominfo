@@ -16,8 +16,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
+             {{-- Sembunyikan navbar dashboard di semua route profile.* --}}
+        @if (!request()->routeIs('profile.*'))
             @include('layouts.navigation')
-
+        @endif
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">

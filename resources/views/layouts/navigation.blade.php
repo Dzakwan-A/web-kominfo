@@ -43,6 +43,10 @@
     <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
         Users
     </x-nav-link>
+
+    <x-nav-link :href="route('admin.profile.edit')" :active="request()->routeIs('admin.profile.*')">
+        Edit Profil
+    </x-nav-link>
                     @elseif($role === 'penulis')
                         <x-nav-link :href="route('writer.dashboard')" :active="request()->routeIs('writer.*')">
                             Penulis
