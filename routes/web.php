@@ -29,8 +29,6 @@ Route::get('/berita', [PublicPostController::class, 'index'])->name('posts.index
 // Hasil pencarian / filter berita (judul + tag)
 Route::get('/berita/result/filter', [PublicPostController::class, 'filter'])->name('posts.filter');
 Route::get('/berita/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
-Route::get('/profil/standar-pelayanan', [ProfileController::class, 'standarpelayanan'])
-  ->name('profil.standar');
 Route::get('/profil/{key}', [ProfilePageController::class, 'show'])
     ->name('profile.show');
 
