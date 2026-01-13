@@ -7,12 +7,18 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white text-slate-900">
+  @include('partials.header')
+
   <article class="max-w-3xl mx-auto px-4 md:px-6 py-10">
     <a href="{{ route('posts.index') }}" class="text-sm text-blue-600 hover:underline">← Arsip Berita</a>
 
     <h1 class="text-3xl md:text-4xl font-bold mt-4">{{ $post->title }}</h1>
     <div class="text-sm text-slate-500 mt-2">
       {{ $post->published_at?->format('d M Y H:i') }}
+    </div>
+
+    <div class="text-sm text-slate-500 mt-1">
+      Dilihat {{ number_format($post->views ?? 0) }} kali
     </div>
 
     @if(!empty($post->tags))

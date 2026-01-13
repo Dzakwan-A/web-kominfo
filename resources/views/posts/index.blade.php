@@ -7,6 +7,8 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 text-slate-900">
+  @include('partials.header')
+
   <div class="max-w-7xl mx-auto px-4 md:px-6 py-10">
     <div class="flex items-end justify-between mb-8">
       <h1 class="text-3xl font-semibold">Arsip Berita</h1>

@@ -42,11 +42,19 @@ class PublicPostController extends Controller
         ]);
     }
 
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
         // hanya berita yang sudah publish yang boleh dilihat publik
         if (is_null($post->published_at)) {
             abort(404);
+        }
+
+        // Hitung view (dibatasi 1x per sesi per berita agar refresh tidak spam angka)
+        $viewed = $request->session()->get('viewed_posts', []);
+        if (!in_array($post->id, $viewed, true)) {
+            $post->increment('views');
+            $viewed[] = $post->id;
+            $request->session()->put('viewed_posts', $viewed);
         }
 
         return view('posts.show', compact('post'));
